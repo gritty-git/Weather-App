@@ -8,6 +8,8 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use(express.static("public"));
+
 app.get("/",function(req,res){
 
   res.sendFile(__dirname + "/index.html");
@@ -23,7 +25,18 @@ app.post("/",function(req,res){
     response.on("data", function(data){
       const weatherData = JSON.parse(data);
       const temp = weatherData.main.temp;
-      res.render("weather", {temp: temp});
+      const desc = weatherData.weather[0].description;
+      const fl = weatherData.main.feels_like;
+      var fln;
+      if(Number(fl)>30){
+        fln = fl + "🥵";
+      }else if(Number(fl)>10){
+        fln = fl + "😊😊";
+      }else{
+        fln = fl + "🥶";
+      }
+
+      res.render("weather", {temp: temp, desc: desc+"!" , fl: fln });
       // res.send("The current temperature is: "+temp);
 
 
