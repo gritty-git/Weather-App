@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/",function(req,res){
@@ -21,9 +23,9 @@ app.post("/",function(req,res){
     response.on("data", function(data){
       const weatherData = JSON.parse(data);
       const temp = weatherData.main.temp;
-      //res.render(__dirname + "/index.html", {temp: temp});
-      res.send("The current temperature is: "+temp);
-      //res.sendFile(__dirname + "/weather.html");
+      res.render("weather", {temp: temp});
+      // res.send("The current temperature is: "+temp);
+
 
     })
 
